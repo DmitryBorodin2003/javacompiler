@@ -307,11 +307,6 @@ BINARY_OPERATION_TYPE_COMPATIBILITY = {
 
 
 BUILT_IN_OBJECTS = '''
-    String read() { }
-    void print(String p0) { }
-    void println(String p0) { }
-    int to_int(String p0) { }
-    int to_float(String p0) { }
 '''
 
 

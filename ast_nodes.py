@@ -61,8 +61,6 @@ class AstNode(ABC):
 
 
 class _GroupNode(AstNode):
-    """Класс для группировки других узлов (вспомогательный, в синтаксисе нет соотвествия)
-    """
 
     def __init__(self, name: str, *childs: AstNode,
                  row: Optional[int] = None, col: Optional[int] = None, **props) -> None:
@@ -79,15 +77,11 @@ class _GroupNode(AstNode):
 
 
 class ExprNode(AstNode, ABC):
-    """Абстракный класс для выражений в AST-дереве
-    """
 
     pass
 
 
 class LiteralNode(ExprNode):
-    """Класс для представления в AST-дереве литералов (числа, строки, логическое значение)
-    """
 
     def __init__(self, literal: str,
                  row: Optional[int] = None, col: Optional[int] = None, **props) -> None:
@@ -116,8 +110,6 @@ class LiteralNode(ExprNode):
 
 
 class IdentNode(ExprNode):
-    """Класс для представления в AST-дереве идентификаторов
-    """
 
     def __init__(self, name: str,
                  row: Optional[int] = None, col: Optional[int] = None, **props) -> None:
@@ -136,9 +128,6 @@ class IdentNode(ExprNode):
 
 
 class TypeNode(IdentNode):
-    """Класс для представления в AST-дереве типов данный
-       (при появлении составных типов данных должен быть расширен)
-    """
 
     def __init__(self, name: str,
                  row: Optional[int] = None, col: Optional[int] = None, **props) -> None:
@@ -156,8 +145,6 @@ class TypeNode(IdentNode):
 
 
 class BinOpNode(ExprNode):
-    """Класс для представления в AST-дереве бинарных операций
-    """
 
     def __init__(self, op: BinaryOperation, arg1: ExprNode, arg2: ExprNode,
                  row: Optional[int] = None, col: Optional[int] = None, **props) -> None:
@@ -205,9 +192,6 @@ class BinOpNode(ExprNode):
 
 
 class CallNode(ExprNode):
-    """Класс для представления в AST-дереве вызова функций
-       (в языке программирования может быть как expression, так и statement)
-    """
 
     def __init__(self, func: IdentNode, *params: ExprNode,
                  row: Optional[int] = None, col: Optional[int] = None, **props) -> None:
@@ -261,9 +245,6 @@ class CallNode(ExprNode):
 
 
 class TypeConvertNode(ExprNode):
-    """Класс для представления в AST-дереве операций конвертации типов данных
-       (в языке программирования может быть как expression, так и statement)
-    """
 
     def __init__(self, expr: ExprNode, type_: DataType,
                  row: Optional[int] = None, col: Optional[int] = None, **props) -> None:
@@ -303,16 +284,12 @@ def type_convert(expr: ExprNode, type_: DataType, except_node: Optional[AstNode]
 
 
 class StmtNode(ExprNode, ABC):
-    """Абстракный класс для деклараций или инструкций в AST-дереве
-    """
 
     def to_str_full(self):
         return self.to_str()
 
 
 class AssignNode(ExprNode):
-    """Класс для представления в AST-дереве оператора присваивания
-    """
 
     def __init__(self, var: IdentNode, val: ExprNode,
                  row: Optional[int] = None, col: Optional[int] = None, **props) -> None:
@@ -335,8 +312,6 @@ class AssignNode(ExprNode):
 
 
 class VarsNode(StmtNode):
-    """Класс для представления в AST-дереве объявления переменнных
-    """
 
     def __init__(self, type_: TypeNode, *vars_: Union[IdentNode, 'AssignNode'],
                  row: Optional[int] = None, col: Optional[int] = None, **props) -> None:
@@ -364,8 +339,6 @@ class VarsNode(StmtNode):
 
 
 class ReturnNode(StmtNode):
-    """Класс для представления в AST-дереве оператора return
-    """
 
     def __init__(self, val: ExprNode,
                  row: Optional[int] = None, col: Optional[int] = None, **props) -> None:
@@ -389,8 +362,6 @@ class ReturnNode(StmtNode):
 
 
 class IfNode(StmtNode):
-    """Класс для представления в AST-дереве условного оператора
-    """
 
     def __init__(self, cond: ExprNode, then_stmt: StmtNode, else_stmt: Optional[StmtNode] = None,
                  row: Optional[int] = None, col: Optional[int] = None, **props) -> None:
@@ -416,8 +387,6 @@ class IfNode(StmtNode):
 
 
 class ForNode(StmtNode):
-    """Класс для представления в AST-дереве цикла for
-    """
 
     def __init__(self, init: Optional[StmtNode], cond: Optional[ExprNode],
                  step: Optional[StmtNode], body: Optional[StmtNode],
@@ -448,8 +417,6 @@ class ForNode(StmtNode):
 
 
 class ParamNode(StmtNode):
-    """Класс для представления в AST-дереве объявления параметра функции
-    """
 
     def __init__(self, type_: TypeNode, name: IdentNode,
                  row: Optional[int] = None, col: Optional[int] = None, **props) -> None:
@@ -475,8 +442,6 @@ class ParamNode(StmtNode):
 
 
 class FuncNode(StmtNode):
-    """Класс для представления в AST-дереве объявления функции
-    """
 
     def __init__(self, type_: TypeNode, name: IdentNode, params: Tuple[ParamNode], body: StmtNode,
                  row: Optional[int] = None, col: Optional[int] = None, **props) -> None:
@@ -521,8 +486,6 @@ class FuncNode(StmtNode):
 
 
 class StmtListNode(StmtNode):
-    """Класс для представления в AST-дереве последовательности инструкций
-    """
 
     def __init__(self, *exprs: StmtNode,
                  row: Optional[int] = None, col: Optional[int] = None, **props) -> None:
