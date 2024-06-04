@@ -1,6 +1,7 @@
 import os
 
 import _parser
+import semantic
 
 
 def main():
@@ -17,7 +18,6 @@ def main():
     int a = 4;
     int b = factorial(a);
     double pi = 3.14;
-    boolean c = False;
     if (a < b) {
         for (int i = 0; i < 10; i = i + 1) {
             a = a + i;
@@ -36,6 +36,16 @@ def execute(prog: str):
     print('ast:')
     print(*prog.tree, sep=os.linesep)
 
+    print('semantic_check:')
+    try:
+        scope = semantic.prepare_global_scope()
+        print("prepared")
+        prog.semantic_check(scope)
+        print(*prog.tree, sep=os.linesep)
+    except semantic.SemanticException as e:
+        print('Ошибка: {}'.format(e.message))
+        return
+    print()
 
 if __name__ == "__main__":
     main()
